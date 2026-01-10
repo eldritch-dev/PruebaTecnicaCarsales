@@ -9,5 +9,6 @@ Prueba Técnica Carsales
     1.1. A definir
 2. En git bash o powershell ejecutar "dotnet run"
 
-# Endpoint base
-A definir
+# Endpoints base
+1. Para que el frontend pueda consumir recursos: http://localhost:5208/api/
+2. Para revisar en Swagger UI (Especificación OpenAPI): http://localhost:5208/swagger
