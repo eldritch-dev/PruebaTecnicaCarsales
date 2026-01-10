@@ -11,7 +11,7 @@ namespace Infrastructure.RickandMortyAPI.Characters
 
         public async Task<List<CharacterDto>> GetCharactersAsync()
         {
-            var response = await _httpClient.GetFromJsonAsync<RickandMortyAPIDto>("character");
+            var response = await _httpClient.GetFromJsonAsync<CharactersDto>("character");
             return response?.Results ?? new List<CharacterDto>();
         }
     }

@@ -1,22 +1,17 @@
+using Infrastructure.RickandMortyAPI.Shared;
+
+
 namespace Infrastructure.RickandMortyAPI.Characters
 {
-    public sealed class RickandMortyAPIDto
+    public sealed class CharactersDto
     {
         public InfoDto Info { get; init; } = new InfoDto();
         public List<CharacterDto> Results { get; init; } = [];
 
-        public RickandMortyAPIDto()
+        public CharactersDto()
         {
             
         }
-    }
-
-    public sealed class InfoDto
-    {
-        public long Count { get; init; }
-        public int Pages { get; init; }
-        public string Next { get; init; } = string.Empty;
-        public string Prev { get; init; } = string.Empty;
     }
 
     public sealed class CharacterDto

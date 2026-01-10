@@ -1,5 +1,7 @@
 using Features.Characters.GetCharacters;
+using Features.Episodes.GetEpisodes;
 using Infrastructure.RickandMortyAPI.Characters;
+using Infrastructure.RickandMortyAPI.Episodes;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +11,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(GetCharactersMappingProfile));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetCharactersHandler>());
+builder.Services.AddAutoMapper(typeof(GetEpisodesMappingProfile));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetEpisodesHandler>());
 
 builder.Services.AddHttpClient<CharactersClient>(client =>
+{
+    var baseUrl = builder.Configuration["RickandMortyAPI:BaseUrl"];
+    if (string.IsNullOrWhiteSpace(baseUrl))
+    {
+        throw new InvalidOperationException("Url base no funciona");
+    }
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddHttpClient<EpisodesClient>(client =>
 {
     var baseUrl = builder.Configuration["RickandMortyAPI:BaseUrl"];
     if (string.IsNullOrWhiteSpace(baseUrl))
@@ -44,10 +58,11 @@ app.UseHttpsRedirection();
 
 app.UseCors("Todos");
 
-var summaries = new[]
+app.MapGet("/episodes", async (IMediator mediator) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var episodes = await mediator.Send(new GetEpisodesQuery());
+    return Results.Ok(episodes);
+});
 
 app.MapGet("/characters", async (IMediator mediator) =>
 {
@@ -55,24 +70,4 @@ app.MapGet("/characters", async (IMediator mediator) =>
     return Results.Ok(characters);
 });
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
