@@ -4,6 +4,7 @@ using Infrastructure.RickandMortyAPI.Characters;
 using Infrastructure.RickandMortyAPI.Episodes;
 using MediatR;
 using Infrastructure.RickandMortyAPI.Http;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,9 +45,9 @@ app.UseHttpsRedirection();
 
 app.UseCors("Todos");
 
-app.MapGet("/episodes", async (IMediator mediator) =>
+app.MapGet("/episodes", async ([FromQuery] int page, IMediator mediator) =>
 {
-    var episodes = await mediator.Send(new GetEpisodesQuery());
+    var episodes = await mediator.Send(new GetEpisodesQuery(page));
     return Results.Ok(episodes);
 });
 
