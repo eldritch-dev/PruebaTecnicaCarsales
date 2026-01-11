@@ -9,10 +9,10 @@ namespace Infrastructure.RickandMortyAPI.Characters
             _httpClient = httpClient;
         }
 
-        public async Task<List<CharacterDto>> GetCharactersAsync()
+        public async Task<CharactersDto> GetCharactersAsync(int page, CancellationToken cancellationToken)
         {
-            var response = await _httpClient.GetFromJsonAsync<CharactersDto>("character");
-            return response?.Results ?? new List<CharacterDto>();
+            var response = await _httpClient.GetFromJsonAsync<CharactersDto>($"character?page={page}", cancellationToken);
+            return response ?? new CharactersDto();
         }
     }
 }

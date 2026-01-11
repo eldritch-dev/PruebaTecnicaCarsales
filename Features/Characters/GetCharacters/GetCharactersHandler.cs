@@ -5,7 +5,7 @@ using Infrastructure.RickandMortyAPI.Characters;
 
 namespace Features.Characters.GetCharacters
 {
-    public class GetCharactersHandler : IRequestHandler<GetCharactersQuery, List<GetCharactersResponse>>
+    public class GetCharactersHandler : IRequestHandler<GetCharactersQuery, GetCharactersResponse>
     {
         private readonly CharactersClient _client;
         private readonly IMapper _mapper;
@@ -16,10 +16,10 @@ namespace Features.Characters.GetCharacters
             _mapper = mapper;
         }
 
-        public async Task<List<GetCharactersResponse>> Handle(GetCharactersQuery request, CancellationToken cancellationToken)
+        public async Task<GetCharactersResponse> Handle(GetCharactersQuery request, CancellationToken cancellationToken)
         {
-            var characters = await _client.GetCharactersAsync();
-            return _mapper.Map<List<GetCharactersResponse>>(characters);
+            var characters = await _client.GetCharactersAsync(request.page, cancellationToken);
+            return _mapper.Map<GetCharactersResponse>(characters, opts => opts.Items["Page"] = request.page);
         }
     }
 }

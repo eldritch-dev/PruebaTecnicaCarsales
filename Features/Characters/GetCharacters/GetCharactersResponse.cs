@@ -2,18 +2,12 @@ namespace Features.Characters.GetCharacters
 {
     public sealed class GetCharactersResponse 
     {
-        public int Id { get; init; }
-        public string Name { get; init;} = string.Empty;
-        public string Species { get; init; } = string.Empty;
-        public string Gender { get; init; } = string.Empty;
-        public Origin Origin { get; init; } = new Origin();
-        public string Image { get; init; } = string.Empty;
-        public string Url { get; init; } = string.Empty;
-    }
-
-    public sealed class Origin
-    {
-        public string Name { get; init; } = string.Empty;
+        public IReadOnlyList<GetCharacterResponse> Characters { get; init; } = [];
+        public int TotalCharacters { get; init; }
+        public int TotalPages { get; init; }
+        public int ActualPage {get; set;}
+        public string NextPageUrl { get; init; } = string.Empty;
+        public string PreviousPageUrl { get; init; } = string.Empty;
     }
 }
 
