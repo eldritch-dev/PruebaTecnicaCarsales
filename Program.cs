@@ -3,6 +3,8 @@ using Features.Episodes.GetEpisodes;
 using Infrastructure.RickandMortyAPI.Characters;
 using Infrastructure.RickandMortyAPI.Episodes;
 using MediatR;
+using Infrastructure.RickandMortyAPI.Http;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,25 +13,14 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Ge
 builder.Services.AddAutoMapper(typeof(GetEpisodesMappingProfile));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetEpisodesHandler>());
 
-builder.Services.AddHttpClient<CharactersClient>(client =>
-{
-    var baseUrl = builder.Configuration["RickandMortyAPI:BaseUrl"];
-    if (string.IsNullOrWhiteSpace(baseUrl))
-    {
-        throw new InvalidOperationException("Url base no funciona");
-    }
-    client.BaseAddress = new Uri(baseUrl);
-});
+builder.Services
+    .AddOptions<ApiOptions>()
+    .Bind(builder.Configuration.GetSection("RickAndMortyApi"))
+    .Validate(o => !string.IsNullOrWhiteSpace(o.BaseUrl), "Url base no funciona")
+    .ValidateOnStart();
 
-builder.Services.AddHttpClient<EpisodesClient>(client =>
-{
-    var baseUrl = builder.Configuration["RickandMortyAPI:BaseUrl"];
-    if (string.IsNullOrWhiteSpace(baseUrl))
-    {
-        throw new InvalidOperationException("Url base no funciona");
-    }
-    client.BaseAddress = new Uri(baseUrl);
-});
+builder.Services.AddRickAndMortyHttpApiClient<CharactersClient>();
+builder.Services.AddRickAndMortyHttpApiClient<EpisodesClient>();
 
 builder.Services.AddCors(options =>
 {
@@ -54,9 +45,9 @@ app.UseHttpsRedirection();
 
 app.UseCors("Todos");
 
-app.MapGet("/episodes", async (IMediator mediator) =>
+app.MapGet("/episodes", async ([FromQuery] int page, IMediator mediator) =>
 {
-    var episodes = await mediator.Send(new GetEpisodesQuery());
+    var episodes = await mediator.Send(new GetEpisodesQuery(page));
     return Results.Ok(episodes);
 });
 

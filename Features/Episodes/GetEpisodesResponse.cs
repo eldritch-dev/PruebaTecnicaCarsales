@@ -2,11 +2,13 @@ namespace Features.Episodes.GetEpisodes
 {
     public sealed class GetEpisodesResponse 
     {
-        public int Id { get; init; }
-        public string Name { get; init;} = string.Empty;
-        public string Air_Date { get; init; } = string.Empty;
-        public string Episode { get; set; } = string.Empty;
-        public string Url { get; init; } = string.Empty;
+        public IReadOnlyList<GetEpisodeResponse> Episodes { get; init; } = [];
+        public int TotalEpisodes { get; init; }
+        public int TotalPages { get; init; }
+        public int ActualPage {get; set;}
+        public string NextPageUrl { get; init; } = string.Empty;
+        public string PreviousPageUrl { get; init; } = string.Empty;
+
     }
 }
 

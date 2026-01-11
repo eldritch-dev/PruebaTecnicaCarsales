@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace Infrastructure.RickandMortyAPI.Episodes
 {
     public sealed class EpisodesClient
@@ -9,10 +11,10 @@ namespace Infrastructure.RickandMortyAPI.Episodes
             _httpClient = httpClient;
         }
 
-        public async Task<List<EpisodeDto>> GetEpisodesAsync()
+        public async Task<EpisodesDto> GetEpisodesAsync(int page, CancellationToken cancellationToken)
         {
-            var response = await _httpClient.GetFromJsonAsync<EpisodesDto>("episode");
-            return response?.Results ?? new List<EpisodeDto>();
+            var response = await _httpClient.GetFromJsonAsync<EpisodesDto>($"episode?page={page}", cancellationToken);
+            return response ?? new EpisodesDto();
         }
     }
 }

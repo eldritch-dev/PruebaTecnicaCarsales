@@ -5,7 +5,7 @@ using Infrastructure.RickandMortyAPI.Episodes;
 
 namespace Features.Episodes.GetEpisodes
 {
-    public class GetEpisodesHandler : IRequestHandler<GetEpisodesQuery, List<GetEpisodesResponse>>
+    public class GetEpisodesHandler : IRequestHandler<GetEpisodesQuery, GetEpisodesResponse>
     {
         private readonly EpisodesClient _client;
         private readonly IMapper _mapper;
@@ -16,10 +16,10 @@ namespace Features.Episodes.GetEpisodes
             _mapper = mapper;
         }
 
-        public async Task<List<GetEpisodesResponse>> Handle(GetEpisodesQuery request, CancellationToken cancellationToken)
+        public async Task<GetEpisodesResponse> Handle(GetEpisodesQuery request, CancellationToken cancellationToken)
         {
-            var episodes = await _client.GetEpisodesAsync();
-            return _mapper.Map<List<GetEpisodesResponse>>(episodes);
+            var episodes = await _client.GetEpisodesAsync(request.Page, cancellationToken);
+            return _mapper.Map<GetEpisodesResponse>(episodes, opts => opts.Items["Page"] = request.Page);
         }
     }
 }
