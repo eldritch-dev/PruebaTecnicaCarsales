@@ -24,7 +24,8 @@ namespace Features.Episodes.GetEpisodes
                 .AfterMap((src, dest, ctx) =>
                 {
                     dest.ActualPage = (int)ctx.Items["Page"];
-                });
+                })
+            ;
         }
     }
 }
