@@ -11,4 +11,4 @@ Prueba Técnica Carsales
 
 # Endpoints base
 1. Para que el frontend pueda consumir recursos: http://localhost:5208/api/
-2. Para revisar en Swagger UI (Especificación OpenAPI): http://localhost:5208/swagger
+2. Para revisar en Swagger UI (Especificación OpenAPI) si es que no se abre automáticamente: http://localhost:5208/swagger
