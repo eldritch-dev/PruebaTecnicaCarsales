@@ -24,7 +24,7 @@ builder.Services.AddRickAndMortyHttpApiClient<EpisodesClient>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Todos", policy =>
+    options.AddPolicy("All", policy =>
     {
         policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
@@ -54,7 +54,7 @@ app.UseExceptionHandler(errorApp =>
 
         var error = new
         {
-            error =  exceptionHandlerPathFeature?.Error.Message ?? "Ocurrió un error",
+            error =  exceptionHandlerPathFeature?.Error.Message ?? "An error occurred.",
             traceId = context.TraceIdentifier   
         };
         
@@ -63,7 +63,7 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-app.UseCors("Todos");
+app.UseCors("All");
 
 app.MapGet("/episodes", async ([FromQuery] int page, IMediator mediator) =>
 {
@@ -84,7 +84,7 @@ app.MapGet("/implicit-error", (int a = 0, int b = 0) =>
 
 app.MapGet("/explicit-error", () => 
 { 
-    throw new Exception("Error de prueba");
+    throw new Exception("Test error");
 });
 
 app.Run();
