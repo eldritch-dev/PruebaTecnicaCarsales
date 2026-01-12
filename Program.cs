@@ -43,6 +43,26 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+
+        var exceptionHandlerPathFeature =
+            context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+
+        var error = new
+        {
+            error =  exceptionHandlerPathFeature?.Error.Message ?? "Ocurrió un error",
+            traceId = context.TraceIdentifier   
+        };
+        
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsJsonAsync(error);
+    });
+});
+
 app.UseCors("Todos");
 
 app.MapGet("/episodes", async ([FromQuery] int page, IMediator mediator) =>
@@ -55,6 +75,16 @@ app.MapGet("/characters", async ([FromQuery] int page, IMediator mediator) =>
 {
     var characters = await mediator.Send(new GetCharactersQuery(page));
     return Results.Ok(characters);
+});
+
+app.MapGet("/implicit-error", (int a = 0, int b = 0) =>
+{
+    return a / b;
+});
+
+app.MapGet("/explicit-error", () => 
+{ 
+    throw new Exception("Error de prueba");
 });
 
 app.Run();
