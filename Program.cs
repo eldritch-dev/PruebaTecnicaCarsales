@@ -71,9 +71,9 @@ app.MapGet("/episodes", async ([FromQuery] int page, IMediator mediator) =>
     return Results.Ok(episodes);
 });
 
-app.MapGet("/characters", async ([FromQuery] int page, IMediator mediator) =>
+app.MapGet("/characters", async ([FromQuery] int page, [FromQuery] string? gender, IMediator mediator) =>
 {
-    var characters = await mediator.Send(new GetCharactersQuery(page));
+    var characters = await mediator.Send(new GetCharactersQuery(page, gender));
     return Results.Ok(characters);
 });
 

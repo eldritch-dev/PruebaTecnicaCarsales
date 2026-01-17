@@ -15,5 +15,5 @@ Backend for Frontend API.
 2. Al terminar de revisar el proyecto, detener servidor con "Ctrl+c" en la terminal.
 
 # Endpoints base
-1. Para que el frontend pueda consumir recursos: http://localhost:5208/api/
+1. Para que el frontend pueda consumir recursos: http://localhost:5208/
 2. Para revisar en Swagger UI en el navegador, si es que no se abre automáticamente: http://localhost:5208/swagger
