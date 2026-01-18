@@ -5,6 +5,7 @@ using Infrastructure.RickandMortyAPI.Episodes;
 using MediatR;
 using Infrastructure.RickandMortyAPI.Http;
 using Microsoft.AspNetCore.Mvc;
+using Features.Characters.SearchCharacters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,9 +72,15 @@ app.MapGet("/episodes", async ([FromQuery] int page, IMediator mediator) =>
     return Results.Ok(episodes);
 });
 
-app.MapGet("/characters", async ([FromQuery] int page, [FromQuery] string? species, [FromQuery] string? gender, IMediator mediator) =>
+app.MapGet("/characters", async ([FromQuery] int page, [FromQuery] string? name, [FromQuery] string? species, [FromQuery] string? gender, IMediator mediator) =>
 {
-    var characters = await mediator.Send(new GetCharactersQuery(page, species, gender));
+    var characters = await mediator.Send(new GetCharactersQuery(page, name, species, gender));
+    return Results.Ok(characters);
+});
+
+app.MapGet("/characters/search", async ([FromQuery] string query, IMediator mediator) =>
+{
+    var characters = await mediator.Send(new SearchCharactersQuery(query));
     return Results.Ok(characters);
 });
 
