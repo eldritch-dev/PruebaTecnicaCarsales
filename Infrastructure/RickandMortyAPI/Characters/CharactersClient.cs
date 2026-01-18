@@ -9,9 +9,16 @@ namespace Infrastructure.RickandMortyAPI.Characters
             _httpClient = httpClient;
         }
 
-        public async Task<CharactersDto> GetCharactersAsync(int page, CancellationToken cancellationToken)
+        public async Task<CharactersDto> GetCharactersAsync(int page, string? species, string? gender, CancellationToken cancellationToken)
         {
-            var response = await _httpClient.GetFromJsonAsync<CharactersDto>($"character?page={page}", cancellationToken);
+            var query = new List<string> { $"page={page}" };
+            if (!string.IsNullOrWhiteSpace(species))
+                query.Add($"species={ Uri.EscapeDataString(species) }");
+            if (!string.IsNullOrWhiteSpace(gender))
+                query.Add($"gender={ Uri.EscapeDataString(gender) }");
+            var url = "character?" + string.Join("&", query);
+            
+            var response = await _httpClient.GetFromJsonAsync<CharactersDto>(url, cancellationToken);
             return response ?? new CharactersDto();
         }
     }
