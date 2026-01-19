@@ -7,7 +7,7 @@ Backend for Frontend API.
 3. Si no las tiene, instalar las siguientes dependencias en Visual Studio Code.
     3.1. .NET Install Tool
     3.2. C# Dev Kit
-4. Si no lo tiene, descargar e instalar .NET SDK 9.0.308 https://dotnet.microsoft.com/es-es/download/dotnet/9.0.
+4. Si no lo tiene, descargar e instalar .NET SDK 8.0.417 https://dotnet.microsoft.com/en-us/download/dotnet/8.0.
 5. Si no lo tiene, descargar e instalar ASP.NET Core Runtime 8.0.22 desde https://dotnet.microsoft.com/en-us/download/dotnet/8.0.
 
 # Instrucciones para probar el proyecto
