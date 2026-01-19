@@ -18,7 +18,7 @@ namespace Features.Characters.GetCharacters
 
         public async Task<GetCharactersResponse> Handle(GetCharactersQuery request, CancellationToken cancellationToken)
         {
-            var characters = await _client.GetCharactersAsync(request.page, request.species, request.gender, cancellationToken);
+            var characters = await _client.GetCharactersAsync(request.page, request.name, request.species, request.gender, cancellationToken);
             return _mapper.Map<GetCharactersResponse>(characters, opts => opts.Items["Page"] = request.page);
         }
     }

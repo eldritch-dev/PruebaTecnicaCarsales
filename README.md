@@ -17,3 +17,8 @@ Backend for Frontend API.
 # Endpoints base
 1. Para que el frontend pueda consumir recursos: http://localhost:5208/
 2. Para revisar en Swagger UI en el navegador, si es que no se abre automáticamente: http://localhost:5208/swagger
+
+# Detalles
+1. El proyecto se ha implementado utilizando arquitectura vertical, la que me ha parecido la más idonea considerando el tiempo acotado y la facilidad de comprensión de quienes quieran revisar el código.
+2. Expone 2 endpoints principales ("/episodes" y "/characters"), 2 endpoints para levantar errores ("/implicit-error" y "explicit-error") y 1 endpoint para las sugerencias del buscador del frontend ("/characters/search").
+3. Ambos endpoints de error se pueden probar en Swagger, pero desde el frontend, el botón para probar error está conectado al error explícito.
