@@ -3,9 +3,7 @@ using Infrastructure.RickandMortyAPI.Http;
 
 public static class HttpClientExtension
 {
-    public static IHttpClientBuilder AddRickAndMortyHttpApiClient<TClient>(
-        this IServiceCollection services)
-        where TClient : class
+    public static IHttpClientBuilder AddRickAndMortyHttpApiClient<TClient>(this IServiceCollection services) where TClient : class
     {
         return services.AddHttpClient<TClient>((sp, client) =>
         {

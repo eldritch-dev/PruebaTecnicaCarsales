@@ -13,15 +13,17 @@ namespace Infrastructure.RickandMortyAPI.Characters
         }
 
         public async Task<CharactersDto> GetCharactersAsync(int page, string? name, string? species, string? gender, CancellationToken cancellationToken)
-        {
-            var query = new List<string> { $"page={page}" };
-            if (!string.IsNullOrWhiteSpace(name))
-                query.Add($"name={ Uri.EscapeDataString(name) }");
-            if (!string.IsNullOrWhiteSpace(species))
-                query.Add($"species={ Uri.EscapeDataString(species) }");
-            if (!string.IsNullOrWhiteSpace(gender))
-                query.Add($"gender={ Uri.EscapeDataString(gender) }");
-            var url = "character?" + string.Join("&", query);
+        {       
+            var query = new Dictionary<string, string?>
+            {
+                ["name"] = name,
+                ["species"] = species,
+                ["gender"] = gender
+            };
+            var url = "character?" + string.Join("&",
+                query.Where(kv => !string.IsNullOrWhiteSpace(kv.Value)).Select(kv => $"{kv.Key}={Uri.EscapeDataString(kv.Value!)}")
+            );
+
             
             var response = await _httpClient.GetFromJsonAsync<CharactersDto>(url, cancellationToken);
             return response ?? new CharactersDto();
